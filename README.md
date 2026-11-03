@@ -23,15 +23,19 @@ de resposta (Defesa Civil, Corpo de Bombeiros).
 
 ```
 big data/
-├── scripts/                       # o código (isto sobe pro GitHub)
-│   ├── 00_testar_ambiente.py      # confere as 7 bibliotecas
+├── scripts/                              # o código (isto sobe pro GitHub)
+│   ├── 00_testar_ambiente.py             # confere as bibliotecas
 │   ├── 01_baixar_queimadas_mensal.py
-│   ├── 02_criar_banco.py          # cria o banco SQLite + carrega focos 2024
-│   ├── 03_explorar_focos.py       # consultas SQL de exploração
-│   ├── 04_carregar_saude.py       # limpa e carrega a saúde (DataSUS)
-│   └── 05_carregar_queimadas_mensal.py  # focos mensais 2020-2024
+│   ├── 02_criar_banco.py                 # cria o banco SQLite + carrega focos 2024
+│   ├── 03_explorar_focos.py              # consultas SQL de exploração
+│   ├── 04_carregar_saude.py              # limpa e carrega a saúde (DataSUS)
+│   ├── 05_carregar_queimadas_mensal.py   # focos mensais 2020-2024
+│   ├── 06_cruzar_queimada_saude.py       # JOIN SQL + correlação de Spearman
+│   ├── 07_graficos.py                    # perfil sazonal, séries, dispersão, heatmap
+│   └── 08_painel.py                      # painel de focos das últimas 24 h (Streamlit)
+├── graficos/                             # figuras geradas pelo 07
 └── dados/
-    └── brutos/                    # dados pequenos de referência (sobem)
+    └── brutos/                           # dados pequenos de referência (sobem)
 ```
 
 > ⚠️ Os dados grandes (banco `.db` de ~479 MB e os focos brutos de 2024) **não ficam
@@ -41,14 +45,20 @@ big data/
 
 - **Python** + **pandas** (manipulação), **sqlite3** (banco), **requests** (download)
 - **SQLite** — banco relacional em arquivo único (`dados/queimadas_saude.db`)
+- **scipy** — correlação de Spearman
 - **matplotlib**, **seaborn**, **plotly** — gráficos e mapas
+- **Streamlit** — painel interativo
 - **scikit-learn** — análise estatística
 
 ## ▶️ Como rodar
 
 ```bash
-python -I scripts/00_testar_ambiente.py          # confere o ambiente
-python -I scripts/02_criar_banco.py              # cria o banco + focos 2024
-python -I scripts/04_carregar_saude.py           # carrega a saúde
-python -I scripts/05_carregar_queimadas_mensal.py  # carrega queimadas mensais
+python -m pip install pandas scipy matplotlib seaborn plotly scikit-learn requests streamlit
+
+python scripts/00_testar_ambiente.py             # confere o ambiente
+python scripts/04_carregar_saude.py              # cria o banco + carrega a saúde
+python scripts/05_carregar_queimadas_mensal.py   # carrega queimadas mensais
+python scripts/06_cruzar_queimada_saude.py       # cruza queimadas × internações
+python scripts/07_graficos.py                    # gera as figuras em graficos/
+python -m streamlit run scripts/08_painel.py     # abre o painel no navegador
 ```
