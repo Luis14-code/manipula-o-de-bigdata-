@@ -14,11 +14,15 @@
 import pandas as pd
 import sqlite3
 import sys
+from pathlib import Path
+
+# Raiz do projeto = pasta acima de "scripts" (funciona em qualquer computador)
+RAIZ = Path(__file__).resolve().parent.parent
 
 sys.stdout.reconfigure(encoding="utf-8")
 
-PASTA = r"C:\Users\luis\Downloads\big data\dados\brutos\queimadas\estatistica"
-BANCO = r"C:\Users\luis\Downloads\big data\dados\queimadas_saude.db"
+PASTA = RAIZ / "dados" / "brutos" / "queimadas" / "estatistica"
+BANCO = RAIZ / "dados" / "queimadas_saude.db"
 
 # Cada arquivo e de um estado. O dicionario liga: nome do arquivo -> sigla (UF).
 arquivos_uf = {
@@ -32,7 +36,7 @@ arquivos_uf = {
 # O "for" percorre o dicionario: 'arquivo' = nome, 'uf' = sigla.
 lista = []
 for arquivo, uf in arquivos_uf.items():
-    caminho = PASTA + "\\" + arquivo
+    caminho = PASTA / arquivo
     tabela = pd.read_csv(caminho)       # separador virgula, utf-8 (padrao)
     tabela["uf"] = uf                   # cria uma coluna "uf" com PA/AM/MA
     lista.append(tabela)

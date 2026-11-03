@@ -12,10 +12,14 @@
 import pandas as pd
 import sqlite3
 import sys
+from pathlib import Path
+
+# Raiz do projeto = pasta acima de "scripts" (funciona em qualquer computador)
+RAIZ = Path(__file__).resolve().parent.parent
 
 sys.stdout.reconfigure(encoding="utf-8")
 
-ARQUIVO = r"C:\Users\luis\Downloads\big data\dados\brutos\saude\internacoes_resp_AM_PA_MA_2020_2024.csv"
+ARQUIVO = RAIZ / "dados" / "brutos" / "saude" / "internacoes_resp_AM_PA_MA_2020_2024.csv"
 
 # ---------------------------------------------------------------------
 # AS 3 PEGADINHAS E SEUS PARAMETROS:
@@ -188,7 +192,7 @@ print(saude_longo.head(6))
 # =====================================================================
 # PASSO G: salvar a tabela limpa no BANCO (igual voce fez na Missao 1!)
 # =====================================================================
-BANCO = r"C:\Users\luis\Downloads\big data\dados\queimadas_saude.db"
+BANCO = RAIZ / "dados" / "queimadas_saude.db"
 conexao = sqlite3.connect(BANCO)
 
 # Salvar saude_longo numa tabela chamada "saude".
